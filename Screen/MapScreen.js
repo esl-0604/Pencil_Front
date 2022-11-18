@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button, Dimensions,TouchableOpacity } from 'rea
 import MapView, {Marker,AnimatedRegion,MarkerAnimated} from 'react-native-maps';
 import { AntDesign } from '@expo/vector-icons'; 
 import Switch from "../Component/Switch";
+import { StatusBar } from 'expo-status-bar';
 
 
  export default function MapScreen() {
@@ -45,32 +46,25 @@ import Switch from "../Component/Switch";
 
     return (
       <View style={styles.container}>
-        <View style={styles.buttonArea}>
-            <Switch
-              selectionMode={2}
-              option1={'My'}
-              option2={'All'}
-              onSelectMode={onSelectMode}
-              selectionColor={'black'}
-            />
-        </View>
+        <StatusBar/>
         <MapView
           style={styles.map}
+          provider = "google"
           showsUserLocation={true}
           showsMyLocationButton={true}
           followUserLocation={true}
-          initialRegion={{
+          region={{
             latitude : latitude,
             longitude : longitude,
             latitudeDelta: 0.000922,
             longitudeDelta: 0.00421  
           }}
         >
-      <Marker
-        coordinate = {{latitude : 37.585436999734746, longitude :127.0294708392166 }}
-        title = "내용"
-        description = "marker example"
-      />
+        <Marker
+          coordinate = {{latitude : 37.585436999734746,  longitude : 127.0294708392166 }}
+          title = "내용"
+          description = "marker example"
+        />
       </MapView>
       <View style={styles.ikonArea}>
             <TouchableOpacity 
@@ -90,24 +84,13 @@ import Switch from "../Component/Switch";
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      paddingBottom: 30,
       backgroundColor: "lightpink",
   }, 
     map: {
-      flex : 5,
+      flex:8,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
     },
-    buttonArea: {
-      flex: 1,
-      flexDirection: "row",
-      justifyContent: "flex-end",
-      alignItems: "flex-end",
-      marginTop: 10,
-      marginBottom: 10,
-      width: 300,
-      backgroundColor: "lightpink",
-  },
   ikonArea: {
     flex: 1,
     justifyContent: "center",
