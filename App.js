@@ -10,7 +10,7 @@ import Shell from "./Screen/ShellScreen";
 export default function App() {
 
   
-  const [view, setView] = useState("3");
+  const [view, setView] = useState("0");
 
   if (view == "0"){
     return (

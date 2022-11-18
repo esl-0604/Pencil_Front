@@ -19,7 +19,6 @@ export default function Switch (
   };
 
   return (
-    <View>
       <View
         style={{
           height: 30,
@@ -45,6 +44,7 @@ export default function Switch (
           <Text
             style={{
               color: getSelectionMode == 1 ? 'ivory' : selectionColor,
+              fontSize: 10
             }}>
             {option1}
           </Text>
@@ -62,11 +62,11 @@ export default function Switch (
           <Text
             style={{
               color: getSelectionMode == 2 ? 'ivory' : selectionColor,
+              fontSize: 10
             }}>
             {option2}
           </Text>
         </TouchableOpacity>
-      </View>
     </View>
   );
 }

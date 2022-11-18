@@ -23,7 +23,7 @@ export default function FeedItem (
             justifyContent: "center",
             borderRadius: 25,
             paddingLeft: 10,
-            backgroundColor: "ivory",
+            backgroundColor: "lightgray",
         }}
     >
         <TouchableOpacity>

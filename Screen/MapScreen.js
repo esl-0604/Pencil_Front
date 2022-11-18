@@ -65,15 +65,6 @@ import { StatusBar } from 'expo-status-bar';
           description = "marker example"
         />
       </MapView>
-      <View style={styles.ikonArea}>
-            <TouchableOpacity 
-              activeOpacity={1}
-              onPress={()=> alert("aa")
-              }
-            >
-              <AntDesign name="plus" size={50} color="ivory"/>     
-            </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -83,20 +74,10 @@ import { StatusBar } from 'expo-status-bar';
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "lightpink",
-  }, 
+    }, 
     map: {
-      flex:8,
+      flex:9,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
     },
-  ikonArea: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 10,
-    width: 300,
-    backgroundColor: "lightpink",
-},
   });

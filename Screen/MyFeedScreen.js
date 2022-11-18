@@ -31,7 +31,7 @@ const Feedstyles = StyleSheet.create({
     
 });
 
-export default function FeedScreen() {
+export default function MyFeedScreen() {
     const [feedMode, setFeedMode] = useState(2);
     const onSelectMode = (val) => {
         setFeedMode(val);
@@ -39,6 +39,15 @@ export default function FeedScreen() {
     
     return (
     <View style={Feedstyles.container}>
+        <View style={Feedstyles.switchArea}>
+            <Switch
+            selectionMode={2}
+            option1={'My'}
+            option2={'All'}
+            onSelectMode={onSelectMode}
+            selectionColor={'black'}
+        />
+        </View>
         <ScrollView style={Feedstyles.FeedList}>
             {FeedData.map((content, i) => {
                 if(content.Id == feedMode) {

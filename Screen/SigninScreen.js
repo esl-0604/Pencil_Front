@@ -11,15 +11,6 @@ export default function SigninScreen() {
         expoClientId: "1078582717102-spsicokn72o1jn16u9f0mga28e450h5b.apps.googleusercontent.com",
       });
     const [userData, setUserData] = useState(null);
-    const setUser = (userData) => {
-      const userOb = {
-        name: userData.name,
-        email: userData.email
-      }
-      setUserData(userOb);
-      console.log("<User 정보>");
-      console.log(userOb);
-    }
     
     useEffect(() => {
     if (response?.type === 'success') {
@@ -40,10 +31,18 @@ export default function SigninScreen() {
           body: JSON.stringify(accessObject)
         })
         .then((res) => res.json())
-        .then((data) => setUser(data));
+        .then((data) => console.log(data));
         
     }
     }, [response]);
+    
+    const login = () => {
+      fetch("http://34.125.39.187.nip.io:8000/", {
+          method : "get",
+        })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+    }
     
     return (
         <View style={{
@@ -54,9 +53,16 @@ export default function SigninScreen() {
         }}>
         <Button
           disabled={!request}
-          title="Login"
+          title="Signin"
           onPress={() => {
             promptAsync();
+          }}
+        />
+        <Button
+          disabled={!request}
+          title="Login"
+          onPress={() => {
+            login();
           }}
         />
         </View>
