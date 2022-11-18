@@ -1,15 +1,19 @@
 import React from "react";
 import react, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Header as HeaderRNE, } from '@rneui/themed';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Tab, TabView, SpeedDial, Button } from '@rneui/themed';
+import { Tab, TabView, SpeedDial, Icon } from '@rneui/themed';
 import MapScreen from "./MapScreen";
 import FeedScreen from "./FeedScreen";
 import MyFeedScreen from "./MyFeedScreen";
 
 
-export default function Shell() {
+export default function ShellScreen(
+    {
+        navigation
+    }
+) {
 
     const [index, setIndex] = useState(0);
     const [open, setOpen] = useState(false);
@@ -26,10 +30,14 @@ export default function Shell() {
                     icon: 'menu',
                     color: 'black',
                 }}
-                rightComponent = {{
-                    icon: 'face',
-                    color: 'black',
-                }}
+                rightComponent = {
+                <View>
+                    <TouchableOpacity 
+                        onPress={() => navigation.navigate("SigninScreen")}
+                    >
+                        <Icon name="face" color="black" />
+                    </TouchableOpacity>
+              </View>}
                 centerComponent = {{ text: 'Yeonpil' }}
             />
             <View style={{

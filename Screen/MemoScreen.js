@@ -22,9 +22,9 @@ export default function MemoScreen(){
           { latitude, longitude },
           { useGoogleMaps: false }
         );
-        console.log(location);
+        // console.log(location);
         setUserLocation(location[0].name);
-        console.log(userLocation);
+        // console.log(userLocation);
 
     }
 

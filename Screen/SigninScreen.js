@@ -3,10 +3,18 @@ import react, { useEffect, useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { Button, View } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ShellScreen from './ShellScreen';
 
 WebBrowser.maybeCompleteAuthSession();
+const Stack = createNativeStackNavigator();
 
-export default function SigninScreen() {
+export default function SigninScreen(
+  {
+    navigation
+  }
+) {
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: "1078582717102-spsicokn72o1jn16u9f0mga28e450h5b.apps.googleusercontent.com",
       });
@@ -21,8 +29,8 @@ export default function SigninScreen() {
           "scope" : authentication.scope,
           "token_type" : authentication.tokenType
         }
-        console.log(authentication);
-        console.log(accessObject);
+        // console.log(authentication);
+        // console.log(accessObject);
         fetch("http://34.125.39.187.nip.io:8000/sign_in", {
           method : "post",
           headers: {
@@ -31,18 +39,11 @@ export default function SigninScreen() {
           body: JSON.stringify(accessObject)
         })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => setUserData(data))
+        .then(() => navigation.navigate("ShellScreen"));
         
     }
     }, [response]);
-    
-    const login = () => {
-      fetch("http://34.125.39.187.nip.io:8000/", {
-          method : "get",
-        })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-    }
     
     return (
         <View style={{
@@ -58,13 +59,7 @@ export default function SigninScreen() {
             promptAsync();
           }}
         />
-        <Button
-          disabled={!request}
-          title="Login"
-          onPress={() => {
-            login();
-          }}
-        />
+        
         </View>
       );
 }
