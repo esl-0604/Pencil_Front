@@ -11,7 +11,6 @@ export default function App() {
 
   
   const [view, setView] = useState("0");
-  const [view, setView] = useState("4");
 
   if (view == "0"){
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import react, { useEffect, useState } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Header as HeaderRNE, } from '@rneui/themed';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Tab, TabView, SpeedDial, Button } from '@rneui/themed';
@@ -18,6 +18,7 @@ export default function Shell() {
         <SafeAreaProvider
             style={{
                 flex: 1,
+                backgroundColor: "white"
             }}>
             <HeaderRNE
                 backgroundColor="ivory"
@@ -36,46 +37,72 @@ export default function Shell() {
                         justifyContent: "center",
                         alignItems: "center",
                         alignSelf: "center",
-                        width: 300,
-                        height: 50,
-                        backgroundColor: "ivory",
+                        width: 250,
+                        height: 40,
+                        backgroundColor: "white",
                         border: "solid",
-                        borderWidth: 2,
+                        borderWidth: 0.5,
                         borderColor: "black",
-                        borderRadius: 20
+                        borderRadius: 20,
+                        marginTop: 10
                     }}>
                 <Tab
                     value={index}
                     onChange={(e) => setIndex(e)}
-                    dense
-                    indicatorStyle={{
-                        backgroundColor: "black",
-                        height: 1,
+                    variant={"defalt"}
+                    disableIndicator={true}  
+                    containerStyle={{
+                        backgroundColor: "white",
                     }}
                 >  
                     <Tab.Item
-                        buttonStyle={{
-                            
+                        containerStyle={{
+                            borderStyle: "solid",
+                            borderColor: "ivory",
+                            borderWidth: 1,
+                            borderRadius: 30,
+                            alignSelf: "center"
+                        }}
+                        disabled={"true"}
+                        disabledStyle={{
+                            backgroundColor: index==0 ? "ivory" : "white"
                         }}
                         // title="Map"
                         // titleStyle={{ fontSize: 8, color: "black" }}
-                        icon={{ name: 'map', type: 'ionicon', color: 'black', size: 15 }}
+                        icon={{ name: 'map', type: 'ionicon', color: 'black', size: 16 }}
                     />
                     <Tab.Item
-                        buttonStyle={{
-                            backgroundColor: "pink",
+                        containerStyle={{
+                            
+                            borderStyle: "solid",
+                            borderColor: "ivory",
+                            borderWidth: 1,
+                            borderRadius: 30,
+                            alignSelf: "center"
+                        }}
+                        disabled={"true"}
+                        disabledStyle={{
+                            backgroundColor: index==1 ? "ivory" : "white"
                         }}
                         // title="Feed"
                         // titleStyle={{ fontSize: 8, color: "black" }}
-                        icon={{ name: 'list', type: 'material', color: 'black', size: 15 }}
+                        icon={{ name: 'list', type: 'material', color: 'black', size: 18 }}
                     />
                     <Tab.Item
-                        buttonStyle={{
-                            backgroundColor: "pink",
+                        containerStyle={{
+                            borderStyle: "solid",
+                            borderColor: "ivory",
+                            borderWidth: 1,
+                            borderRadius: 30,
+                            alignSelf: "center"
+                        }}
+                        disabled={"true"}
+                        disabledStyle={{
+                            backgroundColor: index==2 ? "ivory" : "white"
                         }}
                         // title="My Feed"
                         // titleStyle={{ fontSize: 8, color: "black" }}
-                        icon={{ name: 'lock', type: 'material', color: 'black', size: 15 }}
+                        icon={{ name: 'lock', type: 'material', color: 'black', size: 18 }}
                     />
                 </Tab>
             </View>  
@@ -83,17 +110,14 @@ export default function Shell() {
                 value={index} 
                 onChange={setIndex} 
                 animationType="spring"
-                style={{
-                    backgroundColor:"ivory"
-                }}
             >
-                <TabView.Item style={{width: "100%", marginTop: 10}}>
+                <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
                     <MapScreen></MapScreen>
                 </TabView.Item>
-                <TabView.Item style={{width: "100%", marginTop: 10}}>
+                <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
                     <FeedScreen></FeedScreen>
                 </TabView.Item>
-                <TabView.Item style={{width: "100%", marginTop: 10}}>
+                <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
                     <MyFeedScreen></MyFeedScreen>
                 </TabView.Item>
             </TabView>
