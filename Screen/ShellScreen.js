@@ -100,9 +100,9 @@ export default function Shell() {
                         disabledStyle={{
                             backgroundColor: index==2 ? "ivory" : "white"
                         }}
-                        // title="My Feed"
-                        // titleStyle={{ fontSize: 8, color: "black" }}
-                        icon={{ name: 'lock', type: 'material', color: 'black', size: 18 }}
+                        // title="My"
+                        // titleStyle={{ fontSize: 20, color: "black" }}
+                        icon={{ name: 'home', type: 'antdesign', color: 'black', size: 18 }}
                     />
                 </Tab>
             </View>  
@@ -122,6 +122,9 @@ export default function Shell() {
                 </TabView.Item>
             </TabView>
             <SpeedDial
+                buttonStyle={{
+                    backgroundColor: "ivory"
+                }}
                 isOpen={open}
                 icon={{ name: 'edit', color: 'black' }}
                 openIcon={{ name: 'close', color: 'black' }}
@@ -129,13 +132,19 @@ export default function Shell() {
                 onClose={() => setOpen(!open)}
             >
                 <SpeedDial.Action
-                icon={{ name: 'add', color: 'black' }}
-                title="Add"
+                buttonStyle={{
+                    backgroundColor: "ivory"
+                }}
+                icon={{ name: 'language', color: 'black' }}
+                title="public"
                 onPress={() => console.log('Add Something')}
                 />
                 <SpeedDial.Action
-                icon={{ name: 'delete', color: 'black' }}
-                title="Delete"
+                buttonStyle={{
+                    backgroundColor: "ivory"
+                }}
+                icon={{ name: 'lock', color: 'black' }}
+                title="pribvate"
                 onPress={() => console.log('Delete Something')}
                 />
             </SpeedDial>
