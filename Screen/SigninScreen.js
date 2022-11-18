@@ -8,7 +8,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 export default function SigninScreen() {
     const [request, response, promptAsync] = Google.useAuthRequest({
-        expoClientId: '28464954985-hi9fkko80eva7kl4mqil9rqom3je8bvf.apps.googleusercontent.com',
+        expoClientId: "1078582717102-spsicokn72o1jn16u9f0mga28e450h5b.apps.googleusercontent.com",
       });
 
     useEffect(() => {
@@ -17,6 +17,7 @@ export default function SigninScreen() {
         console.log(authentication);
     }
     }, [response]);
+    
     return (
         <View style={{
             flex: 1,
