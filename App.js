@@ -3,17 +3,25 @@ import react, { useEffect, useState } from "react";
 import { View, Text, Dimensions, StyleSheet, ScrollView } from "react-native";
 import FeedScreen from "./Screen/FeedScreen";
 import SigninScreen from "./Screen/SigninScreen";
+import Shell from "./Screen/ShellScreen";
 
 
 export default function App() {
-  const [view, setView] = useState("1");
-  if (view == "1"){
+  const [view, setView] = useState("0");
+
+  if (view == "0"){
+    return (
+      <Shell></Shell>
+    );
+  }
+
+  else if (view == "1"){
     return (
       <SigninScreen></SigninScreen>
     );
   }
 
-  if (view == "2"){
+  else if (view == "2"){
     return (
       <FeedScreen></FeedScreen>
     );
