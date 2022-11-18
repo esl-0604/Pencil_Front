@@ -63,7 +63,7 @@ export default function Shell() {
                             borderRadius: 30,
                             alignSelf: "center"
                         }}
-                        disabled={"true"}
+                        disabled={ true }
                         disabledStyle={{
                             backgroundColor: index==0 ? "ivory" : "white"
                         }}
@@ -80,7 +80,7 @@ export default function Shell() {
                             borderRadius: 30,
                             alignSelf: "center"
                         }}
-                        disabled={"true"}
+                        disabled={ true }
                         disabledStyle={{
                             backgroundColor: index==1 ? "ivory" : "white"
                         }}
@@ -96,7 +96,7 @@ export default function Shell() {
                             borderRadius: 30,
                             alignSelf: "center"
                         }}
-                        disabled={"true"}
+                        disabled={ true }
                         disabledStyle={{
                             backgroundColor: index==2 ? "ivory" : "white"
                         }}
