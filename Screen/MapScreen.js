@@ -1,12 +1,9 @@
 import * as Location from 'expo-location';
- import { StatusBar } from 'expo-status-bar';
- import { useEffect, useState } from 'react';
- import { StyleSheet, Text, View, Button, Dimensions,TouchableOpacity } from 'react-native';
- //import { NavigationContainer, createNativeStackNavigator } from '@react-navigation/native';
- import MapView, {Marker,AnimatedRegion,MarkerAnimated} from 'react-native-maps';
- import { AntDesign } from '@expo/vector-icons'; 
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Button, Dimensions,TouchableOpacity } from 'react-native';
+import MapView, {Marker,AnimatedRegion,MarkerAnimated} from 'react-native-maps';
+import { AntDesign } from '@expo/vector-icons'; 
 import Switch from "../Component/Switch";
-import FeedItem from "../Component/FeedItem";
 
 
  export default function MapScreen() {
@@ -20,15 +17,15 @@ import FeedItem from "../Component/FeedItem";
       setOk(false);
     };
     const location = await Location.getCurrentPositionAsync({accuracy:6})
-    await setLatitude(location.coords.latitude);
-    await setLongitude(location.coords.longitude);
+    setLatitude(location.coords.latitude);
+    setLongitude(location.coords.longitude);
     console.log("Latitude : " + latitude);
     console.log("Longitude : " + longitude);
   };
 
-  useEffect(() => {
-    ask()
-  }, );
+  // useEffect(() => {
+  //   ask()
+  // }, );
 
   
   const [feedMode, setFeedMode] = useState(2);
@@ -115,17 +112,3 @@ import FeedItem from "../Component/FeedItem";
     backgroundColor: "lightpink",
 },
   });
-
-  /* export default function App() {
-  const [location, setLocation] = useState();
-  const [ok, setOk] = useState(true);
-  const ask = async() => {
-    const {granted} = await Location.requestForegroundPermissionsAsync();
-    if (!granted){
-      setOk(false);
-    };
-    const {coords:{latitude, longitude}} = await Location.getCurrentPositionAsync({accuracy:6});
-    const location = await Location.reverseGeocodeAsync({latitude, longitude}, {useGoogleMaps:false});
-    console.log(location);
-  };
-   */
