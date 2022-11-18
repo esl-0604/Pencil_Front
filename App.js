@@ -5,12 +5,12 @@ import FeedScreen from "./Screen/FeedScreen";
 import SigninScreen from "./Screen/SigninScreen";
 import MapScreen from "./Screen/MapScreen";
 import Shell from "./Screen/ShellScreen";
-
+import MemoScreen from "./Screen/MemoScreen";
 
 export default function App() {
 
   
-  const [view, setView] = useState("3");
+  const [view, setView] = useState("4");
 
   if (view == "0"){
     return (
@@ -33,6 +33,12 @@ export default function App() {
   else if (view == "3"){
     return (
       <MapScreen></MapScreen>
+    )
+  }
+
+  else if (view == "4"){
+    return (
+      <MemoScreen></MemoScreen>
     )
   }
 }
