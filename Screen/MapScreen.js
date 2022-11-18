@@ -20,16 +20,22 @@ import FeedItem from "../Component/FeedItem";
       setOk(false);
     };
     const location = await Location.getCurrentPositionAsync({accuracy:6});
-    setLatitude(location.coords.latitude);
-    setLongitude(location.coords.longitude);
+    await setLatitude(location.coords.latitude);
+    await setLongitude(location.coords.longitude);
     console.log("Latitude : " + latitude);
     console.log("Longitude : " + longitude);
   };
+
+//   useEffect(() => {
+//     ask()
+//   }, []);
+
 
   const [feedMode, setFeedMode] = useState(2);
     const onSelectMode = (val) => {
         setFeedMode(val);
       };
+      
 
     return (
       <View style={styles.container}>
@@ -48,10 +54,10 @@ import FeedItem from "../Component/FeedItem";
         showsMyLocationButton={true}
         followUserLocation={true}
         initialRegion={{
-        //  latitude : latitude,
-        // longitude : {longitude},
-        latitude : 37.585436999734746,
-        longitude :127.0294708392166,
+        latitude : latitude,
+        longitude : longitude,
+        //latitude : 37.585436999734746,
+        //longitude :127.0294708392166,
         latitudeDelta: 0.000922,
         longitudeDelta: 0.00421
         
