@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, Dimensions,TouchableOpacity } from 'react-native';
 import MapView, {Marker,AnimatedRegion,MarkerAnimated} from 'react-native-maps';
 import { AntDesign } from '@expo/vector-icons'; 
-import Switch from "../Component/Switch";
 import { StatusBar } from 'expo-status-bar';
 
 
