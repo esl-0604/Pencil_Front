@@ -62,10 +62,9 @@ export const FeedData = [
   ];
 
 
-export const UserDate = [
+export const ExampleUserData = 
     {
         Id: 1,
         name: "이은상",
         email: "eslee850@gmail.com"
-    },
-  ];
+    };

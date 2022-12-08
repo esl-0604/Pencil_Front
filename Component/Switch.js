@@ -23,7 +23,7 @@ export default function Switch (
         style={{
           height: 30,
           width: 70,
-          backgroundColor: 'ivory',
+          backgroundColor: 'white',
           borderRadius: 25,
           borderWidth: 1,
           borderColor: selectionColor,
@@ -36,14 +36,14 @@ export default function Switch (
           onPress={() => updatedSwitchData(1)}
           style={{
             flex: 1,
-            backgroundColor: getSelectionMode == 1 ? selectionColor : 'ivory',
+            backgroundColor: getSelectionMode == 1 ? selectionColor : 'white',
             borderRadius: 25,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Text
             style={{
-              color: getSelectionMode == 1 ? 'ivory' : selectionColor,
+              color: getSelectionMode == 1 ? 'white' : selectionColor,
               fontSize: 10
             }}>
             {option1}
@@ -54,14 +54,14 @@ export default function Switch (
           onPress={() => updatedSwitchData(2)}
           style={{
             flex: 1,
-            backgroundColor: getSelectionMode == 2 ? selectionColor : 'ivory',
+            backgroundColor: getSelectionMode == 2 ? selectionColor : 'white',
             borderRadius: 25,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Text
             style={{
-              color: getSelectionMode == 2 ? 'ivory' : selectionColor,
+              color: getSelectionMode == 2 ? 'white' : selectionColor,
               fontSize: 10
             }}>
             {option2}

@@ -74,10 +74,11 @@ import { StatusBar } from 'expo-status-bar';
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
+      paddingHorizontal: 16
     }, 
     map: {
-      flex:9,
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
+      flex:1,
+      width: "100%",
+      height: "100%",
     },
   });

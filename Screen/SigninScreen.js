@@ -3,12 +3,9 @@ import react, { useEffect, useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { Button, View } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ShellScreen from './ShellScreen';
 
 WebBrowser.maybeCompleteAuthSession();
-const Stack = createNativeStackNavigator();
 
 export default function SigninScreen(
   {
@@ -17,8 +14,14 @@ export default function SigninScreen(
 ) {
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: "1078582717102-spsicokn72o1jn16u9f0mga28e450h5b.apps.googleusercontent.com",
+        androidClientId: "28464954985-d5i8t6kp7r0okc5ob6te8bgnu87320rn.apps.googleusercontent.com",
       });
     const [userData, setUserData] = useState(null);
+
+    const setUser = (user) => {
+      setUserData(user);
+      navigation.navigate("LoginProfileScreen");
+    } 
     
     useEffect(() => {
     if (response?.type === 'success') {
@@ -39,9 +42,7 @@ export default function SigninScreen(
           body: JSON.stringify(accessObject)
         })
         .then((res) => res.json())
-        .then((data) => setUserData(data))
-        .then(() => navigation.navigate("ShellScreen"));
-        
+        .then((data) => setUser(data));
     }
     }, [response]);
     
@@ -50,11 +51,11 @@ export default function SigninScreen(
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "lightpink",
+            backgroundColor: "white",
         }}>
         <Button
           disabled={!request}
-          title="Signin"
+          title="Google SignIn"
           onPress={() => {
             promptAsync();
           }}

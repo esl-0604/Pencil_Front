@@ -7,6 +7,7 @@ import { Tab, TabView, SpeedDial, Icon } from '@rneui/themed';
 import MapScreen from "./MapScreen";
 import FeedScreen from "./FeedScreen";
 import MyFeedScreen from "./MyFeedScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function ShellScreen(
@@ -15,8 +16,22 @@ export default function ShellScreen(
     }
 ) {
 
+    const userDataLoad = async () => {
+        // 디바이스에 저장되어있는 사용자 정보를 가져온다.
+        await userDataStorage.get()
+            .then((data) => {
+                 console.log(data);
+                 setUser(user);
+                })
+            .catch(console.error);
+    }
+    const [user, setUser]= useState();
     const [index, setIndex] = useState(0);
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        userDataLoad();
+    },[])
 
     return (
         <SafeAreaProvider
@@ -26,18 +41,18 @@ export default function ShellScreen(
             }}>
             <HeaderRNE
                 backgroundColor="ivory"
-                leftComponent = {{
-                    icon: 'menu',
-                    color: 'black',
-                }}
-                rightComponent = {
-                <View>
-                    <TouchableOpacity 
-                        onPress={() => navigation.navigate("SigninScreen")}
-                    >
-                        <Icon name="face" color="black" />
-                    </TouchableOpacity>
-              </View>}
+            //     leftComponent = {{
+            //         icon: 'menu',
+            //         color: 'black',
+            //     }}
+            //     rightComponent = {
+            //     <View>
+            //         <TouchableOpacity 
+            //             // onPress={() => navigation.navigate("SigninScreen")}
+            //         >
+            //             <Icon name="face" color="black" />
+            //         </TouchableOpacity>
+            //   </View>}
                 centerComponent = {{ text: 'Yeonpil' }}
             />
             <View style={{
@@ -81,7 +96,6 @@ export default function ShellScreen(
                     />
                     <Tab.Item
                         containerStyle={{
-                            
                             borderStyle: "solid",
                             borderColor: "ivory",
                             borderWidth: 1,
@@ -119,7 +133,7 @@ export default function ShellScreen(
                 onChange={setIndex} 
                 animationType="spring"
             >
-                <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
+                <TabView.Item style={{ width: "100%", marginTop: 10, backgroundColor:"white"}}>
                     <MapScreen></MapScreen>
                 </TabView.Item>
                 <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
@@ -159,3 +173,29 @@ export default function ShellScreen(
         </SafeAreaProvider>
     );
 }
+
+const key = 'userData';
+const userDataStorage = {
+    async get() {
+      try {
+        const rawData = await AsyncStorage.getItem(key);
+      //   console.log("1");
+        if (!rawData) {
+          throw new Error('No saved ' + key);
+        }
+        const savedData = await JSON.parse(rawData);
+      //   console.log(savedData);
+      //   console.log("2");
+        return savedData;
+      } catch (e) {
+        throw new Error('Failed to load ' + key);
+      }
+    },
+    async set(data) {
+      try {
+        await AsyncStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {
+        throw new Error('Failed to save ' + key);
+      }
+    },
+  };
