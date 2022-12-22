@@ -1,43 +1,67 @@
 import React from "react";
 import react, { useEffect, useState } from "react";
+import * as Location from 'expo-location';
 import { View, TouchableOpacity } from "react-native";
 import { Header as HeaderRNE, } from '@rneui/themed';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Tab, TabView, SpeedDial, Icon } from '@rneui/themed';
-import MapScreen from "./MapScreen";
-import FeedScreen from "./FeedScreen";
-import MyFeedScreen from "./MyFeedScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import MapScreen from "../Component/MapScreen";
+import FeedScreen from "../Component/FeedScreen";
+import MyFeedScreen from "../Component/MyFeedScreen";
+import NewMemoScreen from "../Component/NewMemoScreen";
+
+import { memoData } from "../Data/Dummydata";
+
 
 
 export default function ShellScreen(
     {
-        navigation
+        navigation,
+        route
     }
 ) {
-
-    const userDataLoad = async () => {
-        // 디바이스에 저장되어있는 사용자 정보를 가져온다.
-        await userDataStorage.get()
-            .then((data) => {
-                 console.log(data);
-                 setUser(user);
-                })
-            .catch(console.error);
-    }
     const [user, setUser]= useState();
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(1);
     const [open, setOpen] = useState(false);
+    const [MemoVisible, setMemoVisible] = useState(false);
+    const [memoType, setMemoType] = useState("");
+
+    const setLocation = (loc) => {
+        return {
+          lat: loc.coords.latitude,
+          lon: loc.coords.longitude
+        }
+      };
+    
+      const myLoc = async() => {
+        const {granted} = await Location.requestForegroundPermissionsAsync();
+        if (granted){
+          const location = await Location.getCurrentPositionAsync({accuracy:6})
+          const loc = setLocation(location);  
+          setLat(loc.lat);
+          setLon(loc.lon);
+        }
+      };
+    
+      const [lat, setLat] = useState(null);
+      const [lon, setLon] = useState(null);
+
 
     useEffect(() => {
-        userDataLoad();
-    },[])
+        if(user == null){
+            console.log("ShellScreen!!!");
+            setUser(route.params.userData);
+        }
+        myLoc();
+        // console.log(user);
+    },[user, lat, lon])
 
     return (
         <SafeAreaProvider
             style={{
                 flex: 1,
-                backgroundColor: "white"
+                backgroundColor:"white"
             }}>
             <HeaderRNE
                 backgroundColor="ivory"
@@ -55,6 +79,15 @@ export default function ShellScreen(
             //   </View>}
                 centerComponent = {{ text: 'Yeonpil' }}
             />
+            <NewMemoScreen
+                modalVisible={MemoVisible}
+                setModal={setMemoVisible}
+                type={memoType}
+                pos={{
+                    lat: lat,
+                    lon: lon
+                }}
+            />
             <View style={{
                         flexDirection: "row",
                         justifyContent: "center",
@@ -69,6 +102,7 @@ export default function ShellScreen(
                         borderRadius: 20,
                         marginTop: 10
                     }}>
+                
                 <Tab
                     value={index}
                     onChange={(e) => setIndex(e)}
@@ -133,14 +167,16 @@ export default function ShellScreen(
                 onChange={setIndex} 
                 animationType="spring"
             >
+                
+
                 <TabView.Item style={{ width: "100%", marginTop: 10, backgroundColor:"white"}}>
                     <MapScreen></MapScreen>
                 </TabView.Item>
                 <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
-                    <FeedScreen></FeedScreen>
+                    <FeedScreen memoData={memoData}></FeedScreen>
                 </TabView.Item>
                 <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
-                    <MyFeedScreen></MyFeedScreen>
+                    <MyFeedScreen memoData={memoData} user={route.params.userData}></MyFeedScreen>
                 </TabView.Item>
             </TabView>
             <SpeedDial
@@ -154,48 +190,32 @@ export default function ShellScreen(
                 onClose={() => setOpen(!open)}
             >
                 <SpeedDial.Action
-                buttonStyle={{
-                    backgroundColor: "ivory"
-                }}
-                icon={{ name: 'language', color: 'black' }}
-                title="public"
-                onPress={() => console.log('Add Something')}
+                    buttonStyle={{
+                        backgroundColor: "ivory"
+                    }}
+                    icon={{ name: 'language', color: 'black' }}
+                    title="public"
+                    onPress={() => {
+                        setMemoType("public");
+                        setMemoVisible(true);
+                        setOpen(!open);
+                        
+                    }}
                 />
                 <SpeedDial.Action
-                buttonStyle={{
-                    backgroundColor: "ivory"
-                }}
-                icon={{ name: 'lock', color: 'black' }}
-                title="pribvate"
-                onPress={() => console.log('Delete Something')}
+                    buttonStyle={{
+                        backgroundColor: "ivory"
+                    }}
+                    icon={{ name: 'lock', color: 'black' }}
+                    title="private"
+                    onPress={() => {
+                        setMemoType("private");
+                        setMemoVisible(true);
+                        setOpen(!open);
+                    }}
                 />
             </SpeedDial>
         </SafeAreaProvider>
     );
 }
 
-const key = 'userData';
-const userDataStorage = {
-    async get() {
-      try {
-        const rawData = await AsyncStorage.getItem(key);
-      //   console.log("1");
-        if (!rawData) {
-          throw new Error('No saved ' + key);
-        }
-        const savedData = await JSON.parse(rawData);
-      //   console.log(savedData);
-      //   console.log("2");
-        return savedData;
-      } catch (e) {
-        throw new Error('Failed to load ' + key);
-      }
-    },
-    async set(data) {
-      try {
-        await AsyncStorage.setItem(key, JSON.stringify(data));
-      } catch (e) {
-        throw new Error('Failed to save ' + key);
-      }
-    },
-  };

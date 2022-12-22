@@ -11,51 +11,84 @@ export default function InitialLoadingScreen(
     navigation
   }
 ) {
+
 const [autoLogin, setautoLogin] = useState("");
+const [userData, setUserData] = useState(null);
+
 const CheckDBUserData = async () => {
-    // 디바이스에서 불러온 정보를 디비에서 조회하여 자동 로그인 여부를 확인한다.
-    // 1. 디비에 사용자 정보가 없을 경우 -> SignIn 스크린으로 이동 (자동 로그인 실패)
-    // 2. 디비에 사용자 정보가 있을 경우 -> Shell 스크린으로 이동 (자동 로그인 성공)
+
     await userDataStorage.get()
         .then((data) => {
-            if(data.Id == ExampleUserData.Id){
-                // console.log("<자동 로그인 정보>");
-                // console.log(data);
-                setautoLogin("1");     
+
+          // 디바이스에 사용자 정보가 없을 경우
+          if(data == null){
+            setautoLogin("0"); 
+          }
+
+          // 디바이스에 사용자 정보가 있을 경우
+          else{
+            
+            // // 서버 측으로 해당 사용자 정보를 전송 후 디비와 대조하는 API
+            // fetch("http://34.125.39.187.nip.io:8000/???", {
+            // method : "post",
+            // headers: {
+            //   'Content-Type' : 'application/json'
+            // },
+            // body: JSON.stringify(data)
+            // })
+            // .then( (res) => res.json() )
+            // .then( (res) => {
+
+            //   if(res == true){
+            //     console.log("디비에 해당 사용자 정보가 있습니다. ");  
+            //     setautoLogin("1");  
+            //     setUserData(data);
+            //   }
+            //   else{
+            //     console.log("에러!! 디비에 해당 사용자 정보가 없습니다. ");
+            //     setautoLogin("0"); 
+            //   }
+            // })
+            // .catch( (e) => console.log(e) );
+
+            // 대조 성공
+            if((data.id == ExampleUserData.id) && (data.user_email == ExampleUserData.user_email)){
+              console.log("디비에 해당 사용자 정보가 있습니다. ");  
+              setUserData(data); 
+              setautoLogin("1");  
             }
+            // 대조 실패
             else{
-                // console.log("자동 로그인 정보 오류!");
-                setautoLogin("0");  
-            }})
+              console.log("에러!! 디비에 해당 사용자 정보가 없습니다. ");
+              setautoLogin("0");  
+            }
+          }})
         .catch(console.error);
 }
-const nextPage = () => {
-  console.log(autoLogin);
-  if(autoLogin == "1"){
-    setTimeout(()=>{
-      // 자동 로그인 성공 -> 바로 Shell 스크린으로 이동
-      console.log("자동 로그인 성공!!");
-      console.log("Shell 스크린으로 이동");
-      navigation.navigate("ShellScreen");
-    },3500);
-  }
-  else if(autoLogin == "0"){
-    setTimeout(()=>{
-      // 자동 로그인 실패 -> SignIn 스크린으로 이동
-      console.log("자동 로그인 실패!!");
-      console.log("SignIn 스크린으로 이동");
-      navigation.navigate("SigninScreen");
-    },3500);
-  }
-}
 
-// 이 페이지가 렌더링 되면 3.5초간 타이머가 흘러가며 그 안에 디바이스에서 사용자 정보를 가져온 뒤 디비에서 조회하여 자동 로그인 여부를 판단한다.
 useEffect(() => {
-    // console.log(ExampleUserData);
-    // console.log(userData);
-    console.log("-----------------------------------");
-    CheckDBUserData();
-  }, []);
+    if(autoLogin == ""){
+      console.log("-----------------------------------");
+      CheckDBUserData();
+    }
+    else if(autoLogin == "0"){
+      setTimeout(()=>{
+        // 자동 로그인 실패 -> SignIn 스크린으로 이동
+        console.log("자동 로그인 실패!!");
+        console.log("SignIn 스크린으로 이동");
+        navigation.navigate("SigninScreen");
+      },3500);
+    }
+    else{
+      setTimeout(()=>{
+        // 자동 로그인 성공 -> 바로 Shell 스크린으로 이동
+        console.log("자동 로그인 성공!!");
+        console.log(userData);
+        console.log("Shell 스크린으로 이동");
+        navigation.navigate("ShellScreen", {userData});
+      },3500);
+    }
+  }, [autoLogin]);
 
     return (
         <View style={{
@@ -83,7 +116,6 @@ useEffect(() => {
                 value={100}
                 barAnimationDuration={3000}
                 backgroundColor="black"
-                onComplete={nextPage()}
             />
             </View>
             {/* <Button
@@ -102,12 +134,7 @@ useEffect(() => {
 // Key : 데이터에 대한 Key값
 // get() : key에 해당하는 데이터를 디바이스로부터 불러오는 함수
 // set(data) : 전달된 data를 key을 할당하여 디바이스에 저장하는 함수 
-const key = 'userData';
-const User = {
-    Id: 1,
-    name: "이은상",
-    email: "eslee850@gmail.com"
-};
+const key = 'PencilUserData';
 const userDataStorage = {
   async get() {
     try {
@@ -121,7 +148,9 @@ const userDataStorage = {
     //   console.log("2");
       return savedData;
     } catch (e) {
-      throw new Error('Failed to load ' + key);
+      // throw new Error('Failed to load ' + key);
+      console.log(e);
+      return null;
     }
   },
   async set(data) {

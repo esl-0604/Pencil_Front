@@ -4,16 +4,13 @@ import {Text, View, TouchableOpacity} from 'react-native';
 
 export default function FeedItem (
     {
-        Id,
+        user_id,
+        type,
         text,
-        date
+        // memo_loc
     }
 ) 
 {   
-    const feedType = (id) => {
-        if(id == "1") return "(My)"
-        else return "(All)"
-    }
 
     return (
     <View 
@@ -27,7 +24,7 @@ export default function FeedItem (
         }}
     >
         <TouchableOpacity>
-            <Text>{feedType(Id)}</Text>
+            <Text>{type}</Text>
             <Text>{text}</Text>
             <Text
                 style={{
@@ -35,7 +32,7 @@ export default function FeedItem (
                     color: "gray"
                 }}
             >
-                {date}
+                {/* {memo_loc} */}
             </Text>
         </TouchableOpacity> 
     </View>

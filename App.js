@@ -1,9 +1,11 @@
 import React from "react";
+import react, { useState } from "react";
 
 import InitialLoadingScreen from "./Screen/InitialLoadingScreen";
 import SigninScreen from "./Screen/SigninScreen";
-import ShellScreen from "./Screen/ShellScreen";
 import LoginProfileScreen from "./Screen/LoginProfileScreen";
+import ShellScreen from "./Screen/ShellScreen";
+import NewMemoScreen from "./Component/NewMemoScreen";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -26,11 +28,11 @@ export default function App() {
     </NavigationContainer>
   );
 }
-//   const [view, setView] = useState("1");
+//   const [view, setView] = useState("5");
 
 //   if (view == "0"){
 //     return (
-//       <Shell></Shell>
+//       <ShellScreen></ShellScreen>
 //     );
 //   }
 
@@ -54,7 +56,7 @@ export default function App() {
 
 //   else if (view == "4"){
 //     return (
-//       <MemoScreen></MemoScreen>
+//       <NewMemoScreen></NewMemoScreen>
 //     )
 //   }
 

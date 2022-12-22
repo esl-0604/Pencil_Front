@@ -2,46 +2,34 @@ import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Button, Dimensions,TouchableOpacity } from 'react-native';
 import MapView, {Marker,AnimatedRegion,MarkerAnimated} from 'react-native-maps';
-import { AntDesign } from '@expo/vector-icons'; 
 import { StatusBar } from 'expo-status-bar';
 
 
  export default function MapScreen() {
-
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [ok, setOk] = useState(true);
 
   const setLocation = (loc) => {
     return {
       lat: loc.coords.latitude,
       lon: loc.coords.longitude
     }
-  }
+  };
 
-  const ask = async() => {
+  const myLoc = async() => {
     const {granted} = await Location.requestForegroundPermissionsAsync();
-    if (!granted){
-      setOk(false);
-    }
-    else {
-    const location = await Location.getCurrentPositionAsync({accuracy:6})
-    const loc = setLocation(location);
-    console.log(loc);
-    setLatitude(loc.lat);
-    setLongitude(loc.lon);
+    if (granted){
+      const location = await Location.getCurrentPositionAsync({accuracy:6})
+      const loc = setLocation(location);  
+      setLatitude(loc.lat);
+      setLongitude(loc.lon);
     }
   };
 
-  useEffect(() => {
-    ask()
-  }, []);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null); 
 
-  const [feedMode, setFeedMode] = useState(2);
-    const onSelectMode = (val) => {
-        setFeedMode(val);
-      };
-      
+  useEffect(()=>{
+    myLoc();
+  },[latitude, longitude])  
 
     return (
       <View style={styles.container}>
@@ -60,7 +48,7 @@ import { StatusBar } from 'expo-status-bar';
           }}
         >
         <Marker
-          coordinate = {{latitude : 37.585436999734746,  longitude : 127.0294708392166 }}
+          coordinate = {{latitude : 37.6685,  longitude : 126.7635 }}
           title = "내용"
           description = "marker example"
         />
