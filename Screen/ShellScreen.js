@@ -1,7 +1,7 @@
 import React from "react";
 import react, { useEffect, useState } from "react";
 import * as Location from 'expo-location';
-import { View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { Header as HeaderRNE, } from '@rneui/themed';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Tab, TabView, SpeedDial, Icon } from '@rneui/themed';
@@ -21,42 +21,74 @@ export default function ShellScreen(
         route
     }
 ) {
-    const [user, setUser]= useState();
+    
+      const load = async() => {
+
+        // 사용자 정보 업데이트
+        setUser(route.params.userData);
+
+
+        // 위치 정보 업데이트
+        const {granted} = await Location.requestForegroundPermissionsAsync();
+        if (granted){
+          const location = await Location.getCurrentPositionAsync({accuracy:6});
+          setLat(location.coords.latitude);
+          setLong(location.coords.longitude);
+        }
+
+
+        // public 메모 정보 업데이트 
+        await fetch("http://34.125.39.187.nip.io:8000/all_public_memos", {
+            method : "get",
+          })
+          .then( (res) => res.json() )
+          .then( (data) => {
+            // console.log(data);
+            setPublicMemo(data);
+          })
+          .catch( (e) => console.log(e) );
+
+
+        // 현재 사용자의 메모 정보 업데이트
+        const userMemoURL = "http://34.125.39.187.nip.io:8000/users/memos/";
+        await fetch(userMemoURL + route.params.userData.id, {
+            method : "get",
+          })
+          .then( (res) => res.json() )
+          .then( (data) => {
+            // console.log(data);
+            setUserMemo(data);
+          })
+          .catch( (e) => console.log(e) );
+
+
+        // 최종 상태 업로드 여부 업데이트
+        setLoading(true);
+      };
+    
     const [index, setIndex] = useState(1);
     const [open, setOpen] = useState(false);
     const [MemoVisible, setMemoVisible] = useState(false);
-    const [memoType, setMemoType] = useState("");
+    const [memoType, setMemoType] = useState(null);
 
-    const setLocation = (loc) => {
-        return {
-          lat: loc.coords.latitude,
-          lon: loc.coords.longitude
-        }
-      };
-    
-      const myLoc = async() => {
-        const {granted} = await Location.requestForegroundPermissionsAsync();
-        if (granted){
-          const location = await Location.getCurrentPositionAsync({accuracy:6})
-          const loc = setLocation(location);  
-          setLat(loc.lat);
-          setLon(loc.lon);
-        }
-      };
-    
-      const [lat, setLat] = useState(null);
-      const [lon, setLon] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [user, setUser]= useState({});
+    const [lat, setLat] = useState(null);
+    const [long, setLong] = useState(null);
+    const [publicMemo, setPublicMemo] = useState([]);
+    const [userMemo, setUserMemo] = useState([]);
+    const [reload, setReload] = useState(false);
 
 
     useEffect(() => {
-        if(user == null){
-            console.log("ShellScreen!!!");
-            setUser(route.params.userData);
+        if(loading === false || MemoVisible === false){
+            // console.log("ShellScreen!!!");
+            load();
         }
-        myLoc();
-        // console.log(user);
-    },[user, lat, lon])
+        // console.log(reload);
+    },[loading, reload]);
 
+    if(loading === true){
     return (
         <SafeAreaProvider
             style={{
@@ -82,11 +114,14 @@ export default function ShellScreen(
             <NewMemoScreen
                 modalVisible={MemoVisible}
                 setModal={setMemoVisible}
+                setReload={setReload}
+                reload={reload}
                 type={memoType}
                 pos={{
                     lat: lat,
-                    lon: lon
+                    lon: long
                 }}
+                user={user}
             />
             <View style={{
                         flexDirection: "row",
@@ -111,7 +146,7 @@ export default function ShellScreen(
                     containerStyle={{
                         backgroundColor: "white",
                     }}
-                >  
+                > 
                     <Tab.Item
                         containerStyle={{
                             borderStyle: "solid",
@@ -167,16 +202,14 @@ export default function ShellScreen(
                 onChange={setIndex} 
                 animationType="spring"
             >
-                
-
                 <TabView.Item style={{ width: "100%", marginTop: 10, backgroundColor:"white"}}>
-                    <MapScreen></MapScreen>
+                    <MapScreen lat={lat} long={long} user={user} publicMemo={publicMemo} setReload={setReload} reload={reload} />
                 </TabView.Item>
                 <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
-                    <FeedScreen memoData={memoData}></FeedScreen>
+                    <FeedScreen lat={lat} long={long} user={user} publicMemo={publicMemo} setReload={setReload} reload={reload}/>
                 </TabView.Item>
                 <TabView.Item style={{width: "100%", marginTop: 10, backgroundColor:"white"}}>
-                    <MyFeedScreen memoData={memoData} user={route.params.userData}></MyFeedScreen>
+                    <MyFeedScreen lat={lat} long={long} user={user} userMemo={userMemo} setReload={setReload} reload={reload}/>
                 </TabView.Item>
             </TabView>
             <SpeedDial
@@ -196,7 +229,7 @@ export default function ShellScreen(
                     icon={{ name: 'language', color: 'black' }}
                     title="public"
                     onPress={() => {
-                        setMemoType("public");
+                        setMemoType(0);
                         setMemoVisible(true);
                         setOpen(!open);
                         
@@ -209,7 +242,7 @@ export default function ShellScreen(
                     icon={{ name: 'lock', color: 'black' }}
                     title="private"
                     onPress={() => {
-                        setMemoType("private");
+                        setMemoType(1);
                         setMemoVisible(true);
                         setOpen(!open);
                     }}
@@ -217,5 +250,30 @@ export default function ShellScreen(
             </SpeedDial>
         </SafeAreaProvider>
     );
+    }
+    else{
+        <SafeAreaProvider
+            style={{
+                flex: 1,
+                backgroundColor:"white"
+            }}>
+            <HeaderRNE
+                backgroundColor="ivory"
+            //     leftComponent = {{
+            //         icon: 'menu',
+            //         color: 'black',
+            //     }}
+            //     rightComponent = {
+            //     <View>
+            //         <TouchableOpacity 
+            //             // onPress={() => navigation.navigate("SigninScreen")}
+            //         >
+            //             <Icon name="face" color="black" />
+            //         </TouchableOpacity>
+            //   </View>}
+                centerComponent = {{ text: 'Yeonpil' }}
+            />
+        </SafeAreaProvider>
+    }
 }
 

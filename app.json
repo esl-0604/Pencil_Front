@@ -4,7 +4,7 @@
     "slug": "Pencil-Project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "light",
     "splash": {
@@ -20,13 +20,25 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pencil.pencil"
+      "bundleIdentifier": "com.pencil.pencil",
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.pencil.pencil"
+      "package": "com.pencil.pencil",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey" : "AIzaSyDC4rzqWprnQiX-NDNtguEiV81iOP0Wt5c"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e05f43d2-9197-4f9d-b824-d419135379a6"
+      }
     }
   }
 }

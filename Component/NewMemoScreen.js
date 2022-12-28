@@ -1,8 +1,5 @@
-import * as Location from "expo-location";
-import React, { Component } from 'react'
-import { KeyboardAvoidingView, Text, View, StyleSheet, Modal, TextInput, Alert, Button, TouchableOpacity, Keyboard, Dimensions, PanResponder} from 'react-native'
-import  {PanGestureHandler} from 'react-native-gesture-handler'
-import { AntDesign } from '@expo/vector-icons'; 
+import React from 'react'
+import { KeyboardAvoidingView, Text, View, StyleSheet, Modal, TextInput, Alert, Button} from 'react-native'
 import react, { useEffect, useState } from "react";
 
 export default function NewMemoScreen(
@@ -10,14 +7,48 @@ export default function NewMemoScreen(
     modalVisible,
     setModal,
     type,
-    pos
+    pos,
+    user,
+    setReload,
+    reload
   }
 ){
-
   const [memo, setMemo] = useState("");
+  // const [newMemoOb, setMemoOb] = useState(null);
+
+  const postNewMemo = () => {
+    const date = new Date();
+    const newMemoOB = {
+      user_id : user.id,
+      point_id : 0,
+      memo_type : type,
+      memo_x : Math.floor(pos.lat * 1000) / 1000,
+      memo_y : Math.floor(pos.lon * 1000) / 1000,
+      memo_content : memo.inputText,
+      created_at : date
+    }
+    // setMemoOb(newMemoOB);
+
+    fetch(("http://34.125.39.187.nip.io:8000/memos/create"), {
+      method : "post",
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify(newMemoOB)
+      })
+      .then( (res) => res.json())
+      .then((res)=> {
+        // console.log(newMemoOB);
+        // console.log(res);
+        Alert.alert("메모 저장 성공!!");})
+      .catch( (e) => console.log(e) );
+  }
+
+  
 
   useEffect(()=>{
-    console.log(memo);
+    // console.log(memo);
+
   }, [memo])
   
   return (
@@ -31,7 +62,8 @@ export default function NewMemoScreen(
         style={styles.container}
       >
         <View style={styles.memo}>
-          <Text style={styles.locationText}>📍 {type} {pos.lat} {pos.lon}</Text>
+          {/* <Text style={styles.locationText}>📍 {type} {pos.lat} {pos.lon}</Text> */}
+          <Text style={styles.locationText}>📍 {type === 0 ? "Public Memo" : "Private Memo"} </Text>
           <TextInput
             style={styles.textInput}
             onChangeText={(text)=>{setMemo({inputText: text})}}
@@ -44,30 +76,31 @@ export default function NewMemoScreen(
               marginBottom: 10,
               marginRight: 35
             }}>
+          <View style={{
+              flex: 0.25,
+              marginRight: 10
+            }}>
           <Button title = "Cancel" color = "grey" fontWeight = "bold" 
             onPress={()=>{
               setModal(false);
-            }}
-          />
-          <Button title = "Post" color = "grey" fontWeight = "bold" 
-            onPress={()=>{
-              // 서버로 데이터를 보내는 함수 예정
-              Alert.alert("메모 저장 성공!!");
-              console.log(type);
-              setModal(false);
+              setReload(!reload);
             }}
           />
           </View>
+          <View style={{
+              flex: 0.25,
+            }}>
+          <Button title = "Post" color = "grey" fontWeight = "bold" 
+            onPress={()=>{
+              // 서버로 데이터를 보내는 함수 예정
+              postNewMemo();
+              setModal(false);
+              setReload(!reload);
+            }}
+          />
+          </View>
+          </View>
         </View>
-      {/* <View style={styles.ikonArea}>
-        <TouchableOpacity 
-          activeOpacity={1}
-          onPress={()=>{alert("취소")}}
-          style ={styles.button}
-        >
-          <Text style={styles.xButton}>x</Text>
-        </TouchableOpacity>
-        </View> */}
       </KeyboardAvoidingView>
     </Modal>
   )
@@ -79,6 +112,9 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       flexDirection: "column",
       alignItems: "center",
+      borderColor: "gray",
+      borderStyle: "solid",
+      borderWidth: 0.5,
     },
     memo: {
         width: 350,
@@ -88,6 +124,9 @@ const styles = StyleSheet.create({
         flex: 0.55,
         justifyContent: "space-between",
         flexDirection: "column",
+        borderColor: "gray",
+        borderStyle: "solid",
+        borderWidth: 1,
       },
     locationText: {
         flex : 1,

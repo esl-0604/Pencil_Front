@@ -30,7 +30,6 @@ export default function SigninScreen(
           // console.log(authentication);
           console.log(accessObject);
 
-        
           fetch("http://34.125.39.187.nip.io:8000/sign_in", {
             method : "post",
             headers: {
@@ -39,8 +38,7 @@ export default function SigninScreen(
             body: JSON.stringify(accessObject)
           })
           .then( (res) => res.json() )
-          .then( (data) => {setUserData(data);
-          } )
+          .then( (data) => {setUserData(data);} )
           .catch( (e) => console.log(e) );
       }
     }

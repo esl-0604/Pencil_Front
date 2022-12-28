@@ -2,8 +2,8 @@ import React from "react";
 import react, { useEffect, useState } from "react";
 import { View, ImageBackground  } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ExampleUserData } from "../Data/Dummydata";
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
+import { ExampleUserData } from "../Data/Dummydata";
 
 
 export default function InitialLoadingScreen(
@@ -14,6 +14,7 @@ export default function InitialLoadingScreen(
 
 const [autoLogin, setautoLogin] = useState("");
 const [userData, setUserData] = useState(null);
+const autoLoginURL = "http://34.125.39.187.nip.io:8000/auto_login/";
 
 const CheckDBUserData = async () => {
 
@@ -27,64 +28,64 @@ const CheckDBUserData = async () => {
 
           // 디바이스에 사용자 정보가 있을 경우
           else{
-            
-            // // 서버 측으로 해당 사용자 정보를 전송 후 디비와 대조하는 API
-            // fetch("http://34.125.39.187.nip.io:8000/???", {
-            // method : "post",
-            // headers: {
-            //   'Content-Type' : 'application/json'
-            // },
-            // body: JSON.stringify(data)
-            // })
-            // .then( (res) => res.json() )
-            // .then( (res) => {
+            // console.log(data.id);
+            // 서버 측으로 해당 사용자 정보를 전송 후 디비와 대조하는 API
+            fetch((autoLoginURL + data.id), {
+            method : "post",
+            headers: {
+              'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(data)
+            })
+            .then( (res) => res.json() )
+            .then( (res) => {
 
-            //   if(res == true){
-            //     console.log("디비에 해당 사용자 정보가 있습니다. ");  
-            //     setautoLogin("1");  
-            //     setUserData(data);
-            //   }
-            //   else{
-            //     console.log("에러!! 디비에 해당 사용자 정보가 없습니다. ");
-            //     setautoLogin("0"); 
-            //   }
-            // })
-            // .catch( (e) => console.log(e) );
+              if(res == true){
+                // console.log("디비에 해당 사용자 정보가 있습니다. ");  
+                setUserData(data);
+                setautoLogin("1");  
+              }
+              else{
+                // console.log("에러!! 디비에 해당 사용자 정보가 없습니다. ");
+                setautoLogin("0"); 
+              }
+            })
+            .catch( (e) => console.log(e) );
 
             // 대조 성공
-            if((data.id == ExampleUserData.id) && (data.user_email == ExampleUserData.user_email)){
-              console.log("디비에 해당 사용자 정보가 있습니다. ");  
-              setUserData(data); 
-              setautoLogin("1");  
-            }
-            // 대조 실패
-            else{
-              console.log("에러!! 디비에 해당 사용자 정보가 없습니다. ");
-              setautoLogin("0");  
-            }
+            // if((data.id == ExampleUserData.id) && (data.user_email == ExampleUserData.user_email)){
+            //   console.log("디비에 해당 사용자 정보가 있습니다. ");  
+            //   setUserData(data); 
+            //   setautoLogin("1");  
+            // }
+            // // 대조 실패
+            // else{
+            //   console.log("에러!! 디비에 해당 사용자 정보가 없습니다. ");
+            //   setautoLogin("0");  
+            // }
           }})
         .catch(console.error);
 }
 
 useEffect(() => {
     if(autoLogin == ""){
-      console.log("-----------------------------------");
+      // console.log("-----------------------------------");
       CheckDBUserData();
     }
     else if(autoLogin == "0"){
       setTimeout(()=>{
         // 자동 로그인 실패 -> SignIn 스크린으로 이동
-        console.log("자동 로그인 실패!!");
-        console.log("SignIn 스크린으로 이동");
+        // console.log("자동 로그인 실패!!");
+        // console.log("SignIn 스크린으로 이동");
         navigation.navigate("SigninScreen");
       },3500);
     }
     else{
       setTimeout(()=>{
         // 자동 로그인 성공 -> 바로 Shell 스크린으로 이동
-        console.log("자동 로그인 성공!!");
-        console.log(userData);
-        console.log("Shell 스크린으로 이동");
+        // console.log("자동 로그인 성공!!");
+        // console.log(userData);
+        // console.log("Shell 스크린으로 이동");
         navigation.navigate("ShellScreen", {userData});
       },3500);
     }
@@ -155,7 +156,8 @@ const userDataStorage = {
   },
   async set(data) {
     try {
-      await AsyncStorage.setItem(key, JSON.stringify(data));
+      const JasonData = JSON.stringify(data);
+      await AsyncStorage.setItem(key, JasonData);
     } catch (e) {
       throw new Error('Failed to save ' + key);
     }

@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function LoginProfileScreen(
   {
     navigation,
-    // route
+    route
   }
 ) 
 {
@@ -23,21 +23,21 @@ export default function LoginProfileScreen(
     }
   */
 
-  const example_userData = {
-    id: 1,
-    user_name: "이은상",
-    user_email: "eslee850@gmail.com"
-  };
+  // const example_userData = {
+  //   id: 1,
+  //   user_name: "이은상",
+  //   user_email: "eslee850@gmail.com"
+  // };
   const [userData, setUserData] = useState(null);
 
-  // useEffect(()=>{
-  //   if(userData == null){
-  //     setUserData(route.params.userData);
-  //   }
-  //   else{
-  //     console.log(userData);
-  //   }
-  // },[userData])
+  useEffect(()=>{
+    if(userData == null){
+      setUserData(route.params.userData);
+    }
+    else{
+      // console.log(userData);
+    }
+  },[userData])
 
     return (
         <View style={{
@@ -48,8 +48,8 @@ export default function LoginProfileScreen(
         }}>
           {/* 구글 개인정보 */}
           <Text> {"<개인 정보>"} </Text>
-          {/* <Text>이름 : {route.params.userData.user_name}</Text>
-          <Text>이메일 : {route.params.userData.user_email}</Text> */}
+          <Text>이름 : {route.params.userData.user_name}</Text>
+          <Text>이메일 : {route.params.userData.user_email}</Text>
 
           {/* 자동 로그인 동의 버튼 클릭
             - 디바이스에 사용자 정보 저장 
@@ -57,8 +57,8 @@ export default function LoginProfileScreen(
           <Button
             title="자동 로그인 동의 후 위 사용자로 앱 시작하기"
             onPress={() => {
-                SavedeviceUserData(example_userData);
-                // navigation.navigate("ShellScreen");
+                SavedeviceUserData(userData);
+                navigation.navigate("ShellScreen", {userData});
             }}
           />
         </View>

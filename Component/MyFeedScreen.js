@@ -1,24 +1,46 @@
 import React from "react";
-import react, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import react, { useState } from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
 import FeedItem from "./FeedItem";
+import Switch from "./Switch";
 
 
 export default function MyFeedScreen(
     {
-        memoData,
-        user
+        lat,
+        long,
+        user,
+        userMemo,
+        setReload,
+        reload
     }
 ) {
+    const [mode, setMode] = useState(0);
+
     return (
         <View style={Feedstyles.container}>
+            <View style={{
+                width: 300,
+                flexDirection: "row",
+                justifyContent: "center",
+                marginTop: 10,
+                marginBottom: 15
+            }}>
+            <Switch
+                selectionMode={mode}
+                option1={"public"}
+                option2={"private"}
+                onSelectMode={setMode}
+                selectionColor={"black"}
+            />
+            </View>
             <ScrollView style={Feedstyles.FeedList}>
-                {memoData.map((content, i) => {
-                    if(content.user_id == user.id) {
+                {userMemo.map((content, i) => {
+                    if(content.memo_type == mode) {
                     return (
                         <View key={i}>
-                        <FeedItem user_id={content.user_id} type={content.type} text={content.text} 
-                        // memo_loc={content.memo_loc}
+                        <FeedItem user={user} writer_id={content.user_id} type={content.memo_type} text={content.memo_content} memo_id={content.id}
+                                setReload={setReload} reload={reload}
                         />
                         </View>
                         )
