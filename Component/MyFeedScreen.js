@@ -1,5 +1,5 @@
 import React from "react";
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import FeedItem from "./FeedItem";
 import Switch from "./Switch";
@@ -16,6 +16,9 @@ export default function MyFeedScreen(
     }
 ) {
     const [mode, setMode] = useState(0);
+
+    useEffect(()=>{ 
+    }, [userMemo])
 
     return (
         <View style={Feedstyles.container}>

@@ -49,7 +49,7 @@ export default function FeedItem (
 
         }}
     >
-        <TouchableOpacity>
+        
             {/* <Text>{type}</Text> */}
             <Text style={{
                 marginTop: 30,
@@ -61,6 +61,7 @@ export default function FeedItem (
                 marginRight: 10,
                 marginBottom: 10
             }}>
+            <TouchableOpacity>
             <Pressable
                 onPress={()=>{
                     deleteMemo();
@@ -77,8 +78,8 @@ export default function FeedItem (
             >
                 <Text>삭제</Text>
             </Pressable>
+            </TouchableOpacity>
             </View>
-        </TouchableOpacity> 
     </View>
     );
 }

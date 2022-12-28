@@ -2,7 +2,7 @@ import React from "react";
 import react, { useEffect, useState } from "react";
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
-import { Button, View } from "react-native";
+import { Pressable, View, Text, TouchableOpacity, Image } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -55,14 +55,38 @@ export default function SigninScreen(
             alignItems: "center",
             backgroundColor: "white",
         }}>
-        <Button
-          disabled={!request}
-          title="Google SignIn"
-          onPress={() => {
-            promptAsync();
-          }}
-        />
-        
+          <View style={{
+            justifyContent: "center",
+            alignItems: "center",
+            // backgroundColor: "black"
+            marginBottom: 50,
+          }}>
+            <Image
+              source={require("../Data/Logo.png")}
+            />
+          </View>
+            <TouchableOpacity style={{
+            width : 200,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "lightyellow",
+            borderStyle: "solid",
+            borderWidth: 1.5,
+            borderColor: "black",
+            borderRadius: 50,
+          }}>
+            <Pressable
+              disabled={!request}
+              onPress={() => {
+                promptAsync();
+              }}
+            >
+              <Text>
+                Google SignIn
+              </Text>
+            </Pressable>
+          </TouchableOpacity>
         </View>
       );
 }

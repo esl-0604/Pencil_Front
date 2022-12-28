@@ -85,6 +85,11 @@ export default function ShellScreen(
             // console.log("ShellScreen!!!");
             load();
         }
+        // console.log(user);
+        // console.log(lat);
+        // console.log(long);
+        // console.log(publicMemo);
+        // console.log(userMemo);
         // console.log(reload);
     },[loading, reload]);
 

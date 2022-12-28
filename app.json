@@ -8,7 +8,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,6 +25,10 @@
     },
     "android": {
       "package": "com.pencil.pencil",
+      "adaptiveIcon": {
+        "foregroundImage" : "./assets/Logo.png",
+        "backgroundColor": "white"
+      },
       "versionCode": 1,
       "config": {
         "googleMaps": {
@@ -33,7 +37,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/Logo.png"
     },
     "extra": {
       "eas": {

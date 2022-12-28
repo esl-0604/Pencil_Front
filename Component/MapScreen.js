@@ -15,7 +15,7 @@ import MapView, {Marker,PROVIDER_GOOGLE} from 'react-native-maps';
     }
  ) {
     const mapLoading = useRef(false);
-    const [post, setPost] = useState(null);
+    const [postList, setPostList] = useState(null);
 
     const postLoad = () => {
       const my_X = Math.floor(lat * 1000) / 1000;
@@ -31,7 +31,7 @@ import MapView, {Marker,PROVIDER_GOOGLE} from 'react-native-maps';
         });
         if(search === false){
           post.push({
-            post_id : post.length,
+            post_id : post.length + 1,
             post_x : content.memo_x,
             post_y : content.memo_y,
             memo_num : 1
@@ -40,7 +40,7 @@ import MapView, {Marker,PROVIDER_GOOGLE} from 'react-native-maps';
         search = false;
       });
       // console.log(post);
-      setPost(post);
+      setPostList(post);
     }
 
     useEffect(()=>{
@@ -48,7 +48,7 @@ import MapView, {Marker,PROVIDER_GOOGLE} from 'react-native-maps';
       postLoad();
     }, [publicMemo])
 
-    if(post !== null){
+    if(postList !== null){
     return (
       <View style={styles.container}>
         <MapView
@@ -68,8 +68,7 @@ import MapView, {Marker,PROVIDER_GOOGLE} from 'react-native-maps';
           }}
         >
 
-          {/* {mapLoading.current === true && <Marker coordinate = {{latitude : 37.671,  longitude : 126.763 }}/>} */}
-          {post.map((content, i)=>{
+          {postList.map((content, i)=>{
             if(mapLoading.current === true){
               return(
                 <Marker

@@ -1,6 +1,6 @@
 import React from "react";
 import react, { useEffect, useState } from "react";
-import { Button, View, Text } from "react-native";
+import { Button, View, Text, Image, Pressable, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginProfileScreen(
@@ -46,21 +46,36 @@ export default function LoginProfileScreen(
             alignItems: "center",
             backgroundColor: "white",
         }}>
+          <Image
+              source={require("../Data/Logo.png")}
+          />
           {/* 구글 개인정보 */}
-          <Text> {"<개인 정보>"} </Text>
-          <Text>이름 : {route.params.userData.user_name}</Text>
-          <Text>이메일 : {route.params.userData.user_email}</Text>
+          <Text>{route.params.userData.user_name}</Text>
+          <Text>{route.params.userData.user_email}</Text>
 
-          {/* 자동 로그인 동의 버튼 클릭
-            - 디바이스에 사용자 정보 저장 
-            - Shell screen으로 이동 */}
-          <Button
-            title="자동 로그인 동의 후 위 사용자로 앱 시작하기"
-            onPress={() => {
+          <TouchableOpacity style={{
+            width : 200,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "lightyellow",
+            borderStyle: "solid",
+            borderWidth: 1.5,
+            borderColor: "black",
+            borderRadius: 50,
+            marginTop: 50,
+          }}>
+            <Pressable
+              onPress={() => {
                 SavedeviceUserData(userData);
                 navigation.navigate("ShellScreen", {userData});
             }}
-          />
+            >
+              <Text>
+                위 프로필로 연필 시작하기
+              </Text>
+            </Pressable>
+          </TouchableOpacity>
         </View>
       );
 }
