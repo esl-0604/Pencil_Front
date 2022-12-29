@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, Pressable} from 'react-native';
+import { useEffect } from 'react';
+import {Text, View, TouchableOpacity, Pressable, Alert} from 'react-native';
 
 
 export default function FeedItem (
@@ -7,6 +8,7 @@ export default function FeedItem (
         user,
         writer_id,
         type,
+        screen,
         text,
         memo_id,
         setReload,
@@ -28,10 +30,16 @@ export default function FeedItem (
             .then( (res) => res.json() )
             .then( (data) => {
                 // console.log(data);
+                Alert.alert("메모 삭제", "해당 메모를 삭제하였습니다. ");
             })
             .catch( (e) => console.log(e) );
         }
     }
+
+    useEffect(()=>{
+        // console.log(screen);
+    },[])
+    
     return (
     <View 
         style={{
@@ -61,8 +69,9 @@ export default function FeedItem (
                 marginRight: 10,
                 marginBottom: 10
             }}>
-            <TouchableOpacity>
-            <Pressable
+            {screen == "MyFeed" ?
+            <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={()=>{
                     deleteMemo();
                     setReload(!reload);
@@ -77,8 +86,9 @@ export default function FeedItem (
                 }}
             >
                 <Text>삭제</Text>
-            </Pressable>
             </TouchableOpacity>
+            : null}
+            
             </View>
     </View>
     );

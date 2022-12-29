@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useEffect } from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 
 export default function Switch (
@@ -17,6 +18,10 @@ export default function Switch (
     setSelectionMode(val);
     onSelectMode(val);
   };
+
+  useEffect(()=>{
+    setSelectionMode(selectionMode);
+  },[selectionMode])
 
   return (
       <View

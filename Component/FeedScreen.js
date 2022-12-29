@@ -28,7 +28,7 @@ export default function FeedScreen(
                     if(content.memo_type === 0 && my_X === content.memo_x && my_Y === content.memo_y) {
                     return (
                         <View key={i}>
-                        <FeedItem user={user} writer_id={content.user_id} type={content.memo_type} text={content.memo_content} memo_id={content.id} 
+                        <FeedItem user={user} writer_id={content.user_id} screen={"Feed"} type={content.memo_type} text={content.memo_content} memo_id={content.id} 
                                 setReload={setReload} reload={reload}
                         />
                         </View>

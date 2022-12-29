@@ -1,10 +1,10 @@
 import React from "react";
 import react, { useEffect, useState } from "react";
 import * as Location from 'expo-location';
-import { View } from "react-native";
+import { View, BackHandler, Alert } from "react-native";
 import { Header as HeaderRNE, } from '@rneui/themed';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Tab, TabView, SpeedDial, Icon } from '@rneui/themed';
+import { Tab, TabView, SpeedDial } from '@rneui/themed';
 
 import MapScreen from "../Component/MapScreen";
 import FeedScreen from "../Component/FeedScreen";
@@ -65,6 +65,18 @@ export default function ShellScreen(
         // 최종 상태 업로드 여부 업데이트
         setLoading(true);
       };
+
+      const backAction = () => {
+        Alert.alert("연필 종료", "정말로 연필을 종료하시겠습니까? ", [
+          {
+            text: "아니오",
+            onPress: () => null,
+            style: "cancel"
+          },
+          { text: "예", onPress: () => BackHandler.exitApp() }
+        ]);
+        return true;
+      };
     
     const [index, setIndex] = useState(1);
     const [open, setOpen] = useState(false);
@@ -80,6 +92,7 @@ export default function ShellScreen(
     const [reload, setReload] = useState(false);
 
 
+
     useEffect(() => {
         if(loading === false || MemoVisible === false){
             // console.log("ShellScreen!!!");
@@ -91,6 +104,11 @@ export default function ShellScreen(
         // console.log(publicMemo);
         // console.log(userMemo);
         // console.log(reload);
+
+        BackHandler.addEventListener("hardwareBackPress", backAction);
+
+        return () =>
+            BackHandler.removeEventListener("hardwareBackPress", backAction);
     },[loading, reload]);
 
     if(loading === true){
@@ -158,11 +176,11 @@ export default function ShellScreen(
                             borderColor: "ivory",
                             borderWidth: 1,
                             borderRadius: 30,
-                            alignSelf: "center"
+                            alignSelf: "center",
                         }}
-                        disabled={ true }
+                        disabled={ index==0 ? true : false }
                         disabledStyle={{
-                            backgroundColor: index==0 ? "ivory" : "white"
+                            backgroundColor: index==0 ? "lightyellow" : "white"
                         }}
                         // title="Map"
                         // titleStyle={{ fontSize: 8, color: "black" }}
@@ -176,9 +194,9 @@ export default function ShellScreen(
                             borderRadius: 30,
                             alignSelf: "center"
                         }}
-                        disabled={ true }
+                        disabled={ index==1 ? true : false }
                         disabledStyle={{
-                            backgroundColor: index==1 ? "ivory" : "white"
+                            backgroundColor: index==1 ? "lightyellow" : "white"
                         }}
                         // title="Feed"
                         // titleStyle={{ fontSize: 8, color: "black" }}
@@ -190,11 +208,12 @@ export default function ShellScreen(
                             borderColor: "ivory",
                             borderWidth: 1,
                             borderRadius: 30,
-                            alignSelf: "center"
+                            alignSelf: "center",
+
                         }}
-                        disabled={ true }
+                        disabled={ index==2 ? true : false }
                         disabledStyle={{
-                            backgroundColor: index==2 ? "ivory" : "white"
+                            backgroundColor: index==2 ? "lightyellow" : "white"
                         }}
                         // title="My"
                         // titleStyle={{ fontSize: 20, color: "black" }}
@@ -206,6 +225,9 @@ export default function ShellScreen(
                 value={index} 
                 onChange={setIndex} 
                 animationType="spring"
+                minSwipeRatio={0.4}
+                disableSwipe={true}
+                disableTransition={false}
             >
                 <TabView.Item style={{ width: "100%", marginTop: 10, backgroundColor:"white"}}>
                     <MapScreen lat={lat} long={long} user={user} publicMemo={publicMemo} setReload={setReload} reload={reload} />

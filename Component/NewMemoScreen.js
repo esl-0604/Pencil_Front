@@ -40,7 +40,7 @@ export default function NewMemoScreen(
       .then((res)=> {
         // console.log(newMemoOB);
         // console.log(res);
-        Alert.alert("메모 저장 성공!!");})
+        Alert.alert("새 메모 저장", "새로운 메모를 저장하였습니다. ");})
       .catch( (e) => console.log(e) );
   }
 
@@ -56,6 +56,10 @@ export default function NewMemoScreen(
       animationType="slide"
       transparent={true}
       visible={modalVisible}
+      onRequestClose={()=>{
+        setModal(false);
+        setReload(!reload);
+      }}
     >
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -67,8 +71,10 @@ export default function NewMemoScreen(
           <TextInput
             style={styles.textInput}
             onChangeText={(text)=>{setMemo({inputText: text})}}
-            placeholder="이야기를 적어주세요."
-            multiline ={true}
+            placeholder="이야기를 적어주세요. (최대 100자)"
+            multiline={true}
+            numberOfLines={20}
+            maxLength={100}
           />
           <View style={{
               flexDirection: "row",
