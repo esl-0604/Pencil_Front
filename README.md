@@ -1,5 +1,8 @@
 # Pencil_Front
 
+## What is Pencil
+실시간 위치 기반 메모 저장 SNS
+
 
 ## Notion
 https://www.notion.so/Team-Home-3d71d08cf05a4991866bdc6333c37f39
