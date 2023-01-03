@@ -1,4 +1,4 @@
-# Pencil_Front
+# Pencil_Project
 
 2022년도 2학기 Devkor Project
 
