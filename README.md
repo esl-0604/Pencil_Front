@@ -11,4 +11,4 @@ https://www.notion.so/Team-Home-3d71d08cf05a4991866bdc6333c37f39
 ## Backend
 * FastAPI
 * MySQL
-* Git - https://github.com/verg9730/map-project
+* Git  https://github.com/verg9730/map-project
